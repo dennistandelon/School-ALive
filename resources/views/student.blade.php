@@ -1,6 +1,6 @@
 @extends('navbar')
 
-@section('title','LMS Schoolmaya')
+@section('title','School ALive')
 
 @section('content')
     <div>

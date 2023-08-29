@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     use HasFactory;
+
+    function Detail(){
+        return $this->hasOne(Detail::class);
+    }
 }

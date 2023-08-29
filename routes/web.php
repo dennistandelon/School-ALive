@@ -13,10 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [\App\Http\Controllers\CourseController::class,'index']);
+Route::get('/admin', [\App\Http\Controllers\CourseController::class,'admin']);
 
-Route::get('/home',function(){
-    return view('student');
-});
+Route::post('/newcourse',[\App\Http\Controllers\CourseController::class,'createCourse']);
