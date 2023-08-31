@@ -9,7 +9,7 @@ class Course extends Model
 {
     use HasFactory;
 
-    function Detail(){
-        return $this->hasOne(Detail::class);
+    function Details(){
+        return $this->hasMany(Detail::class);
     }
 }

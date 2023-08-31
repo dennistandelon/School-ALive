@@ -9,6 +9,16 @@
     {{-- Bootstrap --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <style>
+        form{
+            max-width: 700px;
+            margin-left: 10px;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+
+    </script>
 </head>
 <body>
     <table id="courseTable" class="table table-bordered">
@@ -18,6 +28,7 @@
                 <td scope="col">Title</td>
                 <td scope="col">Description</td>
                 <td scope="col">Created At</td>
+                <td scope="col">Last Updated</td>
                 <td scope="col">Details</td>
                 <td scope="col">Action</td>
             </tr>
@@ -31,31 +42,42 @@
                     <td>{{$course->created_at}}</td>
                     <td>{{$course->updated_at}}</td>
                     <td>
-                        <input type="button" value="VIEW">
-                        <input type="button" value="UPDATE">
-                        <input type="button" value="DELETE">
+                        @foreach ($course->details as $detail)
+                            <div>{{$detail->title}}</div>
+                        @endforeach
+                    </td>
+                    <td>
+                        <form action="/admin/update/{{$course->id}}" method="GET">
+                            @csrf
+                            <button type="submit" class="btn btn-secondary" onclick="">UPDATE</button>
+                        </form>
+                        <form action="" method="post">
+                            {{method_field('DELETE')}}
+                            @csrf
+                            <button type="submit" class="btn btn-danger">DELETE</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 
-
-    <form enctype="multipart/form-data" action="/newcourse" method="POST">
+    <form enctype="multipart/form-data" action="/course/new" method="POST">
         @csrf
-        <div>Create new Course</div>
-        <div>
-            <label for="titles">Title</label>
-            <input type="text" name="title" id="titles" placeholder="Title">
+        <h4>Create new Course</h4>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="titles">Title</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="title" id="titles" placeholder="Title">
+            </div>
         </div>
-        <div>
-            <label for="description">Description</label>
-            <input type="text" name="desc" id="description" placeholder="Description">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="description">Description</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="desc" id="description" placeholder="Description">
+            </div>
         </div>
-        <div>
-            <button type="submit">Submit</button>
-        </div>
-
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </body>
 </html>

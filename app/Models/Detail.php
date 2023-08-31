@@ -9,7 +9,7 @@ class Detail extends Model
 {
     use HasFactory;
 
-    public function Course(){
+    public function Courses(){
         return $this->belongsTo(Course::class);
     }
 }
