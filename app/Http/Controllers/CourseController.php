@@ -18,11 +18,15 @@ class CourseController extends Controller
     }
 
     public function admin(){
-        $courses = Course::all();
+        $courses = Course::simplePaginate(1);
         return view('admin',['courses'=>$courses]);
     }
 
+    public function adminSearch(Request $req){
+        $courses = Course::where('title','LIKE',"%$req->search%")->simplePaginate(1);
 
+        return view('admin',['courses'=>$courses]);
+    }
 
     public function createCourse(Request $req){
         $newCourse = new Course();
@@ -42,6 +46,5 @@ class CourseController extends Controller
 
         return redirect()->back();
     }
-
 
 }

@@ -10,6 +10,14 @@ class Course extends Model
     use HasFactory;
 
     function Details(){
-        return $this->hasMany(Detail::class);
+        return $this->hasMany(Detail::class,'course_id','id');
+    }
+
+    function Students(){
+        return $this->belongsToMany(User::class,'course_students', 'course_id','student_id');
+    }
+
+    function Lecturer(){
+        return $this->belongTo(Lecturer::class,'lecturer_id','id');
     }
 }

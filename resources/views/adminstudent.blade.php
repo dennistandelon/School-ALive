@@ -23,7 +23,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">[School ALive] Admin Dashboard</a>
+            <a class="navbar-brand" href="#">[School ALive] Admin Dashboard - Student</a>
             <form class="d-flex" action={{url('/admin/search')}} method="GET">
               <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
@@ -34,29 +34,23 @@
         <thead>
             <tr>
                 <td scope="col">Id</td>
-                <td scope="col">Title</td>
-                <td scope="col">Description</td>
-                <td scope="col">Created At</td>
-                <td scope="col">Last Updated</td>
-                <td scope="col">Details</td>
-                <td scope="col">Action</td>
+                <td scope="col">Name</td>
+                <td scope="col">Image Url</td>
             </tr>
         </thead>
         <tbody>
-            @foreach ($courses as $course)
+            @foreach ($students as $student)
                 <tr scope="row">
-                    <td>{{$course->id}}</td>
-                    <td>{{$course->title}}</td>
-                    <td>{{$course->desc}}</td>
-                    <td>{{$course->created_at}}</td>
-                    <td>{{$course->updated_at}}</td>
+                    <td>{{$student->id}}</td>
+                    <td>{{$student->fullname}}</td>
+                    <td>{{$student->imageurl}}</td>
                     <td>
-                        @foreach ($course->details as $detail)
+                        @foreach ($student->Courses as $detail)
                             <div>{{$detail->title}}</div>
                         @endforeach
                     </td>
                     <td>
-                        <form action="/admin/update/{{$course->id}}" method="GET">
+                        <form action="/admin/update/{{$student->id}}" method="GET">
                             @csrf
                             <button type="submit" class="btn btn-secondary" onclick="">UPDATE</button>
                         </form>
@@ -71,11 +65,11 @@
         </tbody>
     </table>
     <div class="pagination">
-        {{$courses->withQueryString()->links()}}
+        {{$students->withQueryString()->links()}}
     </div>
     <form enctype="multipart/form-data" action="/course/new" method="POST">
         @csrf
-        <h4>Create new Course</h4>
+        <h4>Insert new Student</h4>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label" for="titles">Title</label>
             <div class="col-sm-10">
