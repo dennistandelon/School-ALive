@@ -24,6 +24,9 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">[School ALive] Admin Dashboard - Student</a>
+            <form class="d-flex" action="/logout" method="GET">
+                <button class="btn btn-outline-danger" type="submit">Logout</button>
+            </form>
             <form class="d-flex" action={{url('/admin/search')}} method="GET">
               <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
@@ -36,6 +39,8 @@
                 <td scope="col">Id</td>
                 <td scope="col">Name</td>
                 <td scope="col">Image Url</td>
+                <td scope="col">Course Taken</td>
+                <td scope="col">Action</td>
             </tr>
         </thead>
         <tbody>
@@ -43,18 +48,18 @@
                 <tr scope="row">
                     <td>{{$student->id}}</td>
                     <td>{{$student->fullname}}</td>
-                    <td>{{$student->imageurl}}</td>
+                    <td><img width="200px" height="200px" src="{{Storage::url($student->imageurl)}}" alt="Lecturer Image" srcset="{{Storage::url($student->imageurl)}}"></td>
                     <td>
                         @foreach ($student->Courses as $detail)
                             <div>{{$detail->title}}</div>
                         @endforeach
                     </td>
                     <td>
-                        <form action="/admin/update/{{$student->id}}" method="GET">
+                        <form action="/admin-student/update/{{$student->id}}" method="GET">
                             @csrf
                             <button type="submit" class="btn btn-secondary" onclick="">UPDATE</button>
                         </form>
-                        <form action="" method="post">
+                        <form action="/admin-student/delete/{{$student->id}}" method="post">
                             {{method_field('DELETE')}}
                             @csrf
                             <button type="submit" class="btn btn-danger">DELETE</button>
@@ -67,22 +72,22 @@
     <div class="pagination">
         {{$students->withQueryString()->links()}}
     </div>
-    <form enctype="multipart/form-data" action="/course/new" method="POST">
+    <form enctype="multipart/form-data" action="/student/new" method="POST">
         @csrf
         <h4>Insert new Student</h4>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="titles">Title</label>
+            <label class="col-sm-2 col-form-label" for="titles">Fullname</label>
             <div class="col-sm-10">
-                <input class="form-control" type="text" name="title" id="titles" placeholder="Title">
+                <input class="form-control" type="text" name="fullname" id="titles">
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="description">Description</label>
+            <label class="col-sm-2 col-form-label" for="images">Description</label>
             <div class="col-sm-10">
-                <input class="form-control" type="text" name="desc" id="description" placeholder="Description">
+                <input class="form-control" type="file" name="image" id="images">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Insert</button>
     </form>
 </body>
 </html>

@@ -42,9 +42,19 @@ class CourseController extends Controller
         $reqCourse = Course::find($req->course_id);
         $reqCourse->title = $req->title;
         $reqCourse->desc = $req->desc;
+        $reqCourse->lecturer_id = $req->lec;
         $reqCourse->save();
 
         return redirect()->back();
     }
 
+    public function deleteCourse($id){
+        $course = Course::find($id);
+
+        if(isset($course)){
+            $course->delete();
+        }
+
+        return redirect()->back();
+    }
 }

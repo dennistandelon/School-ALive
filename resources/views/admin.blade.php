@@ -24,6 +24,9 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">[School ALive] Admin Dashboard</a>
+            <form class="d-flex" action="/logout" method="GET">
+                <button class="btn btn-outline-danger" type="submit">Logout</button>
+            </form>
             <form class="d-flex" action={{url('/admin/search')}} method="GET">
               <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
@@ -60,7 +63,7 @@
                             @csrf
                             <button type="submit" class="btn btn-secondary" onclick="">UPDATE</button>
                         </form>
-                        <form action="" method="post">
+                        <form action="/course/delete/{{$course->id}}" method="post">
                             {{method_field('DELETE')}}
                             @csrf
                             <button type="submit" class="btn btn-danger">DELETE</button>

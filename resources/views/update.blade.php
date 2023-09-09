@@ -69,6 +69,12 @@
                 <input class="form-control" type="text" name="desc" id="description" placeholder="{{$course->desc}}" value="{{$course->desc}}">
             </div>
         </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="lec">Lecturer ID</label>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="lec" id="lec" placeholder="{{$course->lecturer_id}}" value="{{$course->lecturer_id}}">
+            </div>
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
