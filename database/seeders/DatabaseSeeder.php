@@ -31,5 +31,10 @@ class DatabaseSeeder extends Seeder
             'status_id' => 0
         ]);
 
+        DB::table('courses')->insert([
+            'title'=>'Algorithm and Programming',
+            'desc'=>'Learn basic of Programming and some of most used Algorithms',
+            'lecturer_id'=>0
+        ]);
     }
 }

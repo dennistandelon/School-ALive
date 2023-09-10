@@ -24,9 +24,17 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">[School ALive] Admin Dashboard</a>
-            <form class="d-flex" action="/logout" method="GET">
-                <button class="btn btn-outline-danger" type="submit">Logout</button>
-            </form>
+            <span class="d-flex">
+                <form class="d-flex" action="/admin-lecturer" method="GET">
+                    <button class="btn btn-outline-primary" type="submit">Manage Lecturer</button>
+                </form>
+                <form class="d-flex" action="/admin-student" method="GET">
+                    <button class="btn btn-outline-primary" type="submit">Manage Student</button>
+                </form>
+                <form class="d-flex" action="/logout" method="GET">
+                    <button class="btn btn-outline-danger" type="submit">Logout</button>
+                </form>
+            </span>
             <form class="d-flex" action={{url('/admin/search')}} method="GET">
               <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
@@ -91,7 +99,17 @@
                 <input class="form-control" type="text" name="desc" id="description" placeholder="Description">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="lec">Lecturer</label>
+            <div class="col-sm-10">
+                <select name="lecturer_id" id="lec">
+                    @foreach ($lecturers as $lecturer)
+                        <option value="{{$lecturer->id}}">{{$lecturer->fullname}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
     </form>
 </body>
 </html>

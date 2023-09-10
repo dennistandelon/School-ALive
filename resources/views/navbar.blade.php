@@ -17,13 +17,13 @@
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
+                    <a href="/home" class="nav-link @yield('home')" aria-current="page">
                   <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
                   Home
                 </a>
               </li>
               <li class="nav-item">
-                  <a href="#" class="nav-link" aria-current="page">
+                  <a href="/profile" class="nav-link @yield('profile')" aria-current="page">
                       <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
                       Profile
                     </a>

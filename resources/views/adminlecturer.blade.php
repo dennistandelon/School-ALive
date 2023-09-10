@@ -24,10 +24,18 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">[School ALive] Admin Dashboard - Lecturer</a>
-            <form class="d-flex" action="/logout" method="GET">
-                <button class="btn btn-outline-danger" type="submit">Logout</button>
-            </form>
-            <form class="d-flex" action={{url('/admin/search')}} method="GET">
+            <span class="d-flex">
+                <form class="d-flex" action="/admin" method="GET">
+                    <button class="btn btn-outline-primary" type="submit">Manage Course</button>
+                </form>
+                <form class="d-flex" action="/admin-student" method="GET">
+                    <button class="btn btn-outline-primary" type="submit">Manage Student</button>
+                </form>
+                <form class="d-flex" action="/logout" method="GET">
+                    <button class="btn btn-outline-danger" type="submit">Logout</button>
+                </form>
+            </span>
+            <form class="d-flex" action={{url('/admin-lecturer/search')}} method="GET">
               <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
@@ -55,9 +63,9 @@
                         @endforeach
                     </td>
                     <td>
-                        <form action="/admin-lecturer/update/{{$lecturer->id}}" method="GET">
+                        <form action="/admin-lecturer/loginas/{{$lecturer->id}}" method="GET">
                             @csrf
-                            <button type="submit" class="btn btn-secondary" onclick="">UPDATE</button>
+                            <button type="submit" class="btn btn-secondary" onclick="">Login As</button>
                         </form>
                         <form action="/lecturer/delete/{{$lecturer->id}}" method="post">
                             {{method_field('DELETE')}}
@@ -93,7 +101,7 @@
                 <input class="form-control" type="file" name="image" id="images">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Insert</button>
     </form>
 </body>
 </html>

@@ -26,11 +26,15 @@
         <div>Title: {{$course->title}}</div>
         <div>Description: {{$course->desc}}</div>
     </div>
+
+
+    <h4>Course Detail</h4>
     <table id="courseTable" class="table table-bordered">
         <thead>
             <tr>
                 <td scope="col">Module</td>
                 <td scope="col">Description</td>
+                <td scope="col">Action</td>
             </tr>
         </thead>
         <tbody>
@@ -48,6 +52,33 @@
             @endforeach
         </tbody>
     </table>
+
+    <h4>Student List</h4>
+    <table id="studentTable" class="table table-bordered">
+        <thead>
+            <tr>
+                <td scope="col">Student ID</td>
+                <td scope="col">Fullname</td>
+                <td scope="col">Action</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($course->students as $detail)
+                <tr scope="row">
+                    <td>{{$detail->id}}</td>
+                    <td>{{$detail->fullname}}</td>
+                    <td>
+                        <form enctype="multipart/form-data" action="/coursestudent/delete/{{$course->id}}/{{$detail->id}}" method="post">
+                            {{method_field('DELETE')}}
+                            @csrf
+                            <button type="submit" class="btn btn-danger">DELETE</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+
     <form enctype="multipart/form-data" action="/course/update" method="POST">
         @csrf
         <h4>Update Course Detail</h4>
@@ -70,12 +101,16 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" for="lec">Lecturer ID</label>
+            <label class="col-sm-2 col-form-label" for="lec">Lecturer</label>
             <div class="col-sm-10">
-                <input class="form-control" type="text" name="lec" id="lec" placeholder="{{$course->lecturer_id}}" value="{{$course->lecturer_id}}">
+                <select name="lec" id="lec">
+                    @foreach ($lecturers as $lecturer)
+                        <option value="{{$lecturer->id}}">{{$lecturer->fullname}}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
 
     <form enctype="multipart/form-data" action="/detail/new" method="POST">
@@ -99,7 +134,29 @@
                 <input class="form-control" type="text" name="desc" id="description" placeholder="Description">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+
+    <form action="/coursestudent/new" method="post">
+        @csrf
+        <h4>Add Student</h4>
+        <div class="form-group row" hidden>
+            <div class="col-sm-10">
+                <input class="form-control" type="text" name="cid" id="cid" value="{{$course->id}}">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="students">Students</label>
+            <div class="col-sm-10">
+                <select name="students[]" id="students" multiple>
+                    @foreach ($students as $student)
+                        <option value="{{$student->id}}">{{$student->fullname}}</option>
+                    @endforeach
+                </select>
+                <div>CTRL/CMD + Click to select multiple</div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Add</button>
     </form>
 </body>
 </html>

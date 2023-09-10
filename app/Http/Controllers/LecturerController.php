@@ -4,20 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Lecturer;
 use App\Models\User;
 
 class LecturerController extends Controller
 {
     public function admin(){
-        $lecturers = Lecturer::simplePaginate(1);
+        $lecturers = Lecturer::simplePaginate(5);
         return view('adminlecturer',['lecturers'=>$lecturers]);
     }
 
-    public function adminUp($id){
-        $person = Lecturer::find($id);
-        $type = 'lecturer';
-        return view('profile',['person'=>$person,'type'=>$type]);
+    public function adminAs($id){
+        $lec_user = User::all()->where('status','lecturer')->where('status_id',$id)->firstOrFail();
+
+        $user_id = $lec_user->id;
+
+        Auth::logout();
+        Auth::loginUsingId($user_id);
+
+        return redirect('/home');
+    }
+
+    public function adminSearch(Request $req){
+        $lecturers = Lecturer::where('fullname','LIKE',"%$req->search%")->simplePaginate(5);
+
+        return view('adminlecturer',['lecturers'=>$lecturers]);
     }
 
     public function insertLecturer(Request $req){
@@ -46,9 +58,9 @@ class LecturerController extends Controller
 
     public function deleteLecturer($id){
         $lecturer = Lecturer::find($id);
-        $lec_user = Lecturer::where('status','lecturer')->where('status_id',$id)->get($id);
+        $lec_user = User::all()->where('status','lecturer')->where('status_id',$id)->firstOrFail();
 
-        $lec_user = Lecturer::find($lec_user->id);
+        $lec_user = User::find($lec_user->id);
 
         if(isset($lecturer)){
             $storagelink = $lecturer->imageurl;

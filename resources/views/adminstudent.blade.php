@@ -24,10 +24,18 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">[School ALive] Admin Dashboard - Student</a>
-            <form class="d-flex" action="/logout" method="GET">
-                <button class="btn btn-outline-danger" type="submit">Logout</button>
-            </form>
-            <form class="d-flex" action={{url('/admin/search')}} method="GET">
+            <span class="d-flex">
+                <form class="d-flex" action="/admin" method="GET">
+                    <button class="btn btn-outline-primary" type="submit">Manage Course</button>
+                </form>
+                <form class="d-flex" action="/admin-lecturer" method="GET">
+                    <button class="btn btn-outline-primary" type="submit">Manage Lecturer</button>
+                </form>
+                <form class="d-flex" action="/logout" method="GET">
+                    <button class="btn btn-outline-danger" type="submit">Logout</button>
+                </form>
+            </span>
+            <form class="d-flex" action={{url('/admin-student/search')}} method="GET">
               <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
@@ -55,9 +63,9 @@
                         @endforeach
                     </td>
                     <td>
-                        <form action="/admin-student/update/{{$student->id}}" method="GET">
+                        <form action="/admin-student/loginas/{{$student->id}}" method="GET">
                             @csrf
-                            <button type="submit" class="btn btn-secondary" onclick="">UPDATE</button>
+                            <button type="submit" class="btn btn-secondary" onclick="">Login As</button>
                         </form>
                         <form action="/admin-student/delete/{{$student->id}}" method="post">
                             {{method_field('DELETE')}}

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\CourseStudent;
 use App\Models\Course;
@@ -13,14 +14,26 @@ use App\Models\User;
 class StudentController extends Controller
 {
     public function admin(){
-        $students = Student::simplePaginate(1);
+        $students = Student::simplePaginate(5);
         return view('adminstudent',['students'=>$students]);
     }
 
-    public function adminUp($id){
-        $person = Student::find($id);
-        $type = 'student';
-        return view('profile',['person'=>$person,'type'=>$type]);
+    public function adminAs($id){
+        $st_user = User::all()->where('status','student')->where('status_id',$id)->firstOrFail();
+
+
+        $user_id = $st_user->id;
+
+        Auth::logout();
+        Auth::loginUsingId($user_id);
+
+        return redirect('/home');
+    }
+
+    public function adminSearch(Request $req){
+        $students = Student::where('fullname','LIKE',"%$req->search%")->simplePaginate(5);
+
+        return view('adminstudent',['students'=>$students]);
     }
 
     public function insertStudent(Request $req){
@@ -48,7 +61,7 @@ class StudentController extends Controller
 
     public function deleteStudent($id){
         $student = Student::find($id);
-        $st_user = User::all()->where('status','student')->where('status_id',$id)->get($id);
+        $st_user = User::all()->where('status','student')->where('status_id',$id)->firstOrFail();
 
         $st_user = User::find($st_user->id);
 
@@ -61,6 +74,14 @@ class StudentController extends Controller
 
         if(isset($st_user)){
             $st_user->delete();
+        }
+
+        $course_link = CourseStudent::all();
+
+        foreach ($course_link as $link) {
+            if($link->student_id == $id){
+                $link->delete();
+            }
         }
 
         return redirect()->back();
@@ -90,12 +111,40 @@ class StudentController extends Controller
     }
 
     public function assignCourse(Request $req){
-        $r = new CourseStudent();
 
-        $r->student_id = $req->sid;
-        $r->course_id = $req->cid;
+        if(!isset($req->students)){
+            return redirect()->back();
+        }
 
-        $r->save();
+        if(!is_array($req->students)){
+
+            $r = new CourseStudent();
+
+            $r->student_id = $req->students;
+            $r->course_id = $req->cid;
+            $r->save();
+
+            return redirect()->back();
+        }
+
+        foreach ($req->students as $st) {
+            $r = new CourseStudent();
+
+            $r->student_id = $st;
+            $r->course_id = $req->cid;
+            $r->save();
+        }
+
+        return redirect()->back();
+    }
+
+    public function unassignCourse($cid,$sid){
+
+        $data = CourseStudent::where('student_id',$sid)->where('course_id',$cid)->firstOrFail();
+
+        if(isset($data)){
+            $data->delete();
+        }
 
         return redirect()->back();
     }
